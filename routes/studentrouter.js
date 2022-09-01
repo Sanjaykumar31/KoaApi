@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const bodyparser = require('koa-bodyparser')
 const studentCatalog = require('../model/studentCatalog')
 const validator = require('../validator')
-const middleware = require('../middleware')
+const validate= require('koa-joi-validate')
 const _ = require('lodash')
 const checkId = require('../checkId')
 
@@ -29,7 +29,7 @@ router.get("/student/:id", checkId, getstudent, async (ctx) => {
   }
 })
 
-router.post("/student", middleware(validator), async (ctx) => {
+router.post("/student",validate(validator), async (ctx) => {
   const student = new studentCatalog(ctx.request.body)
   try {
     const result = await student.save();
