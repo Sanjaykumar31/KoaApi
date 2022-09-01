@@ -2,12 +2,12 @@ const router = require('koa-router')()
 const bodyparser = require('koa-bodyparser')
 const studentCatalog = require('../model/studentCatalog')
 const validator = require('../validator')
-const validate = require('koa-joi-validate')
+const validate= require('koa-joi-validate')
 const _ = require('lodash')
 const checkId = require('../checkId')
 
 router.use(bodyparser())
-router.get("/", async (ctx) => {
+router.get("/student", async (ctx) => {
   try {
     const student = await studentCatalog.find();
     ctx.response.status = 200;
@@ -18,7 +18,7 @@ router.get("/", async (ctx) => {
   }
 })
 
-router.get("/:id", checkId, getstudent, async (ctx) => {
+router.get("/student/:id", checkId, getstudent, async (ctx) => {
   try {
     const result = await studentCatalog.findById(ctx.request.params.id);
     ctx.response.status = 200;
@@ -29,7 +29,7 @@ router.get("/:id", checkId, getstudent, async (ctx) => {
   }
 })
 
-router.post("/", validate(validator), async (ctx) => {
+router.post("/student",validate(validator), async (ctx) => {
   const student = new studentCatalog(ctx.request.body)
   try {
     const result = await student.save();
@@ -42,7 +42,7 @@ router.post("/", validate(validator), async (ctx) => {
 })
 
 
-router.put("/:id", checkId, getstudent, async (ctx) => {
+router.put("/student/:id", checkId, getstudent, async (ctx) => {
   try {
     const result = await studentCatalog.findByIdAndUpdate(ctx.request.params.id, ctx.request.body, { new: true })
     ctx.response.status = 200
@@ -54,7 +54,7 @@ router.put("/:id", checkId, getstudent, async (ctx) => {
   }
 })
 
-router.delete("/:id", checkId, getstudent, async (ctx) => {
+router.delete("/student/:id", checkId, getstudent, async (ctx) => {
   try {
     await studentCatalog.findByIdAndDelete(ctx.request.params.id);
     ctx.response.status = 200;
